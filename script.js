@@ -1,20 +1,3 @@
-const slides = document.querySelector('.slides');
-const reviews = document.querySelectorAll('.review');
-const prev = document.querySelector('.prev');
-const next = document.querySelector('.next');
-let index = 0;
-
-function showSlide(i) {
-    index = (i + reviews.length) % reviews.length;
-    slides.style.transform = `translateX(-${index * 100}%)`;
-}
-
-prev.addEventListener('click', () => showSlide(index - 1));
-next.addEventListener('click', () => showSlide(index + 1));
-
-// Optional: auto-slide
-setInterval(() => showSlide(index + 1), 5000);
-
 document.querySelectorAll('.card').forEach(card => {
     card.addEventListener('click', function() {
         document.getElementById('modal-title').innerText = this.getAttribute('data-place');
@@ -45,3 +28,21 @@ window.addEventListener('click', function(e) {
 document.getElementById('buy-button').addEventListener('click', function() {
     alert("Переходимо до купівлі квитка!");
 });
+
+let current = 0;
+const slides = document.querySelectorAll('.slides');
+const dots = document.querySelectorAll('.dot');
+
+function currentSlide(index) {
+  slides.forEach((slide, i) => {
+    slide.classList.toggle('active', i === index);
+    dots[i].classList.toggle('active', i === index);
+  });
+  current = index;
+}
+
+// Автоматичне переключення кожні 5 секунд (необов’язково)
+setInterval(() => {
+  let next = (current + 1) % slides.length;
+  currentSlide(next);
+}, 5000);
